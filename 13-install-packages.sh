@@ -10,7 +10,6 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script started executing at $TIMESTAMP" $>> $LOGFILE
-
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
@@ -35,11 +34,11 @@ fi # fi means reverse of if, indicating condition end
 for package in $@ 
 do
     yum list installed $package &>> $LOGFILE #check installed or not
-    if [$? -ne 0 ] # if not installed
-    then 
+ if [$? -ne 0 ] # if not installed
+ then 
         yum install $package -y  &>> $LOGFILE # install the package
         VALIDATE $? "installatin of $package" # validate
-    else 
+ else 
         echo -e "$package is already installed ... $Y SKIPPING $N"
-    fi
+ fi
 done
